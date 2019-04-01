@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: grafana
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    external-dns.alpha.kubernetes.io/hostname: grafana.example.com
+    traefik.frontend.rule.type: PathPrefixStrip
+
+    traefik.ingress.kubernetes.io/priority: "1"
+    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+spec:
+  rules:
+    - host: grafana.example.com
+      http:
+        paths:
+          - path:
+            backend:
+              serviceName: grafana-grafana
+              servicePort: http
